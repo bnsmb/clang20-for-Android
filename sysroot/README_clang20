@@ -1,0 +1,110 @@
+
+
+This tar file contains the compiler clang20 and the files necessary to compile binaries and libraries for Android on an arm64 CPU from the Android NDK r29-beta1 compiled for Android on arm64 CPUs.
+
+The tar file is an add-on for the tar file with the clang19 toolchain for Android on arm64 CPUs, but can also be used without the files from the tar archive with clang19 if the other files from 
+the toolchain for clang19 are either not required or are provided by other methods.
+
+
+The tar file with the clang19 toolchaing is available here:
+
+https://bnsmb.de/files/public/Android/clang19_toolchain-v1.2.0_release_23.03.2025_.tar.gz
+
+(see https://xdaforums.com/t/guide-how-to-install-a-toolchain-for-clang-on-phones-without-root-access.4710235/ for infos about the tar file with clang19)
+
+
+To use the clang20 in this tar archive, install and initialize the tar file with the clang19 and then copy this tar file to the phone and unpack it in the directory /data/local/tmp:
+
+cd /data/local/tmp 
+tar -xf /sdcard/Download/clang20_for_Android_22.04.2025_v1.0.0-2487801.tar.gz
+
+
+The clang20 files are then in the directory 
+
+/data/local/tmp/sysroot/usr/clang20
+
+
+The binaries for clang20 are in the directory
+
+/data/local/tmp/sysroot/usr/clang20/bin
+
+
+The files from the Android NDK are in the directory
+
+/data/local/tmp/sysroot/usr/ndk/r29-beta1
+
+The sysroot from the Android NDK is in the directory
+
+/data/local/tmp/sysroot/usr/ndk/r29-beta1/sysroot
+
+
+Use the command 
+
+source /data/local/tmp/sysroot/bin/init_clang20_env
+
+to init the environment for the clang20. This script defines all necessary environment variables (including the PATH variable) to use the clang20.
+
+
+The script init_clang20_env executes the script
+
+/data/local/tmp/local_init_clang20_env
+
+if it exists (use the parameter "no_user" to disable the execution of that script)
+
+
+Use the command 
+
+/data/local/tmp/sysroot/bin/init_clang20_env help
+
+to print the usage help for the init script
+
+
+The tar archive also contains the source code for two simple C/C++ programs to test the compiler; the commands to use them to create the test programs are:
+
+cd /data/local/tmp/sysroot/usr/share/clang20/
+clang ${CFLAGS} ${LDFLAGS} -o helloworld_in_c helloworld_in_c.c  && ./helloworld_in_c
+
+cd /data/local/tmp/sysroot/usr/share/clang20/
+clang++ ${CXXFLAGS} -lc++_shared ${LDFLAGS}  -o helloworld_in_c++ ./helloworld_in_c++.cpp && ./helloworld_in_c++
+
+
+
+Source Code used to create the binaries
+---------------------------------------
+
+The repository with the source code for the clang is:
+
+https://android.googlesource.com/toolchain/llvm-project
+
+The source code was checked out in 04/2025
+
+
+To get the source for clang20 use these commands: 
+
+git clone https://android.googlesource.com/toolchain/llvm-project
+
+cd llvm-project
+
+git checkout llvm-r547379-release
+
+
+See the file 
+
+./sysroot/usr/share/clang20/source/myconfigure_for_clang20
+
+in the tar archive for the cmake options used to prepare the build process for the clang20.
+The clang20 binaries were compiled on a machine running the Linux OS with the Cross Compiler from the Android NDK r27b
+
+
+The Android NDKs are available here:
+
+https://developer.android.com/ndk/downloads
+
+
+
+History
+
+22.04.2025 v1.0.0
+  initial release
+
+
