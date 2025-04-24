@@ -12,6 +12,10 @@
 #  14.04.2025 v1.0.0 /bs
 #    initial release
 #
+#  24.04.2025 v1.0.1 /bs
+#    the script now sets the environment variable HOSTNAME to "$( getprop ro.product.device ) $( getprop ro.serialno )" if it's empty
+#
+
 
 __TRUE=0
 __FALSE=1
@@ -501,6 +505,15 @@ ${USER_DEFINED_INIT_SCRIPT} found -- now executing that file ...
     fi
   fi
 fi
+
+if [ "${HOSTNAME}"x = ""x ] ; then
+  if [ $( hostname )x != "localhost"x ] ; then
+    export HOSTNAME="$( hostname )"
+  else
+    export HOSTNAME="$( getprop ro.product.device ) $( getprop ro.serialno )"
+  fi
+fi
+
 
 if [ ${PRINT_EXAMPLES} = ${__TRUE} ] ; then
 
